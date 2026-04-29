@@ -106,8 +106,15 @@ Primary use cases:
 - saving a transcript into the correct client or project meeting path
 - drafting the structured meeting sections from the transcript
 - producing a finished note file rather than only a chat summary
+- acting as the main "paste transcript here" skill for meeting capture
 
 This skill works especially well after `elixirr-workspace-manager` has created the meeting note shell or captured the transcript.
+
+Follow-up question behavior:
+
+- yes, this skill should ask short follow-up questions when filing details are missing
+- typical examples are client, whether the meeting is client-wide or project-specific, project name, or meeting date
+- it should avoid long questionnaires and only ask what is needed to save the note correctly
 
 ## Meeting Paths
 
