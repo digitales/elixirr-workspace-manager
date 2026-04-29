@@ -24,6 +24,7 @@ Current capabilities added so far:
 - end-to-end meeting writing skill for turning pasted transcripts into finished saved notes
 - recurring automation output shells for standups, bug scans, triage, progression maps, and weekly summaries
 - working-memory refresh skill for promoting important signals into live project memory
+- working-memory bootstrap skill for bringing legacy project history into the v2 model
 - follow-up communication skill for Slack, Teams, email, and task-list outputs
 
 The current operating model is:
@@ -182,6 +183,17 @@ Primary use cases:
 - rolling up automation outputs into current project state
 - incorporating relevant Slack and Teams summaries
 - using manual exports only when they contain signal not yet summarized elsewhere
+
+### `elixirr-memory-bootstrap`
+
+Use this to create an initial working-memory baseline for an existing project with substantial history.
+
+Primary use cases:
+
+- bringing an older client or project into the Elixirr v2 structure
+- condensing long Slack or Teams history into a usable baseline
+- producing historical summary files before creating `working-memory/current.md`
+- creating a current-state snapshot without replaying every raw message
 
 ### `elixirr-follow-up-comms`
 
@@ -396,6 +408,13 @@ For memory refresh:
 1. Review the latest meetings, automation outputs, and communication summaries.
 2. Use `elixirr-memory-refresh` to update `working-memory/current.md`.
 3. Promote only the signals that still matter now.
+
+For legacy project onboarding:
+
+1. scaffold the client and project into the v2 structure
+2. place large historical source material into `manual-exports/` or reuse existing notes
+3. use `elixirr-memory-bootstrap` to create one or more historical summaries and an initial `working-memory/current.md`
+4. then switch to `elixirr-memory-refresh` for normal ongoing updates
 
 For follow-up communication:
 
