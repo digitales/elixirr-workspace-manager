@@ -18,6 +18,8 @@ mkdir -p "$CONTEXT_DIR"
 mkdir -p "$CLIENT_DIR/meetings/recurring"
 mkdir -p "$CLIENT_DIR/meetings/ad-hoc"
 mkdir -p "$CLIENT_DIR/projects"
+mkdir -p "$CLIENT_DIR/slack/channels"
+mkdir -p "$CLIENT_DIR/teams/channels"
 
 copy_template() {
   local source_file="$1"
@@ -32,5 +34,7 @@ copy_template "$TEMPLATE_DIR/client.md" "$CONTEXT_DIR/client.md"
 copy_template "$TEMPLATE_DIR/people.md" "$CONTEXT_DIR/people.md"
 copy_template "$TEMPLATE_DIR/preferences.md" "$CONTEXT_DIR/preferences.md"
 copy_template "$TEMPLATE_DIR/commercial.md" "$CONTEXT_DIR/commercial.md"
+copy_template "$TEMPLATE_DIR/channel-map.md" "$CLIENT_DIR/slack/channel-map.md"
+copy_template "$TEMPLATE_DIR/teams-channel-map.md" "$CLIENT_DIR/teams/channel-map.md"
 
 printf 'Created client scaffold at %s\n' "$CLIENT_DIR"

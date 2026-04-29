@@ -40,10 +40,17 @@ For combined transcript capture:
 ## Structure Rules
 
 - Client-wide context lives under `clients/<client>/context/`
+- Client-wide Slack mappings and channel outputs live under `clients/<client>/slack/`
+- Client-wide Teams mappings and channel outputs live under `clients/<client>/teams/`
 - Client-wide meetings live under `clients/<client>/meetings/`
 - Project-specific context lives under `clients/<client>/projects/<project>/context/`
+- Project working memory lives under `clients/<client>/projects/<project>/working-memory/`
 - Project outputs live under `clients/<client>/projects/<project>/outputs/`
+- Manual source exports should usually live under `clients/<client>/projects/<project>/manual-exports/`
 - Agent-specific outputs live under `outputs/codex`, `outputs/claude`, and `outputs/other-agents`
+- Automation outputs should usually live under `outputs/automations/<automation-name>/`
+- Project Slack summaries should usually live under `outputs/slack/<channel-name>/`
+- Project Teams summaries should usually live under `outputs/teams/<channel-name>/`
 - Meeting templates in this skill should match the structure used by `elixirr-meeting-notes`:
   `Summary`, `Decisions`, `Action Items`, `Risks / Blockers`, `References`, and `Transcript`
 
