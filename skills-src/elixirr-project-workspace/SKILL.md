@@ -17,6 +17,7 @@ Use this skill when the user wants a new project scaffold inside an Elixirr clie
 ## Notes
 
 - The script creates `context/`, `meetings/`, `outputs/`, and `automations/`.
+- The script creates `working-memory/`, `manual-exports/`, and communication output folders too.
 - Agent-specific outputs live under `outputs/codex`, `outputs/claude`, and `outputs/other-agents`.
 - Project-specific meeting notes belong under `projects/<project>/meetings/`.
 

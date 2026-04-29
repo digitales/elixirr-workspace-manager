@@ -19,6 +19,8 @@ Use this skill when the user wants a new client scaffold in the Elixirr workspac
 - The script is idempotent for existing files: it creates missing folders and only fills in missing template files.
 - Client-wide recurring meetings belong under `clients/<client>/meetings/recurring/`.
 - Client-wide ad hoc meetings belong under `clients/<client>/meetings/ad-hoc/`.
+- Client communication routing belongs under `clients/<client>/slack/` and `clients/<client>/teams/`.
+- Individual client communication channels should have `context.md`, `manual-exports/`, and `outputs/`.
 
 ## Resources
 

@@ -18,9 +18,13 @@ Current capabilities added so far:
 - client Teams scaffolding with `channel-map.md`
 - project output folders for `automations/`, `slack/`, and `teams/`
 - project `manual-exports/` folders for raw Slack and Teams exports
+- client channel workspaces with `context.md`, `manual-exports/`, and `outputs/`
 - meeting note scaffolding with a shared standard note format
 - transcript capture helpers for creating a meeting note and inserting transcript content
 - end-to-end meeting writing skill for turning pasted transcripts into finished saved notes
+- recurring automation output shells for standups, bug scans, triage, progression maps, and weekly summaries
+- working-memory refresh skill for promoting important signals into live project memory
+- follow-up communication skill for Slack, Teams, email, and task-list outputs
 
 The current operating model is:
 
@@ -31,6 +35,14 @@ The current operating model is:
 - `manual-exports/` = raw copied/exported source material
 
 Installed runtime skill copies have also been refreshed in `~/.codex/skills/` so the working scaffold matches the git-tracked source in this folder.
+
+## Recommended Next Steps
+
+- add a memory-refresh skill that updates `working-memory/current.md` from meetings, automation outputs, Slack summaries, and Teams summaries
+- add client-level `manual-exports/` support under `clients/<client>/slack/channels/<channel>/` and `clients/<client>/teams/channels/<channel>/`
+- add templates or helpers for recurring automation outputs such as standup summaries, bug scans, and weekly engineering summaries
+- add communication follow-up skills that turn meeting notes into Slack messages, Teams messages, emails, or task lists
+- add promotion rules so important signals can move cleanly from raw exports to processed outputs and then into working memory
 
 ## Purpose
 
@@ -44,6 +56,7 @@ These skills support an Elixirr workspace structure organized around:
 - `clients/<client>/projects/<project>/context/` for project-specific context
 - `clients/<client>/projects/<project>/working-memory/` for live project memory
 - `clients/<client>/projects/<project>/outputs/` for generated outputs by agent
+- `clients/<client>/projects/<project>/outputs/communications/` for drafted follow-up messages and task outputs
 - `clients/<client>/projects/<project>/manual-exports/` for copied or exported raw source material
 - `internal/` for non-client work
 
@@ -108,12 +121,16 @@ Primary use cases:
 - creating an empty meeting note in the right location
 - capturing a transcript into the right meeting note file
 - creating working-memory, Slack, Teams, and manual-export scaffolding as part of client/project setup
+- creating client channel workspaces with manual exports and processed outputs
+- creating recurring automation output shells from templates
 
 Key scripts:
 
 - `elixirr-workspace-manager/scripts/init-elixirr.sh`
 - `elixirr-workspace-manager/scripts/new-client.sh`
 - `elixirr-workspace-manager/scripts/new-project.sh`
+- `elixirr-workspace-manager/scripts/create-channel-workspace.sh`
+- `elixirr-workspace-manager/scripts/create-automation-output.sh`
 - `elixirr-workspace-manager/scripts/create-meeting-note.sh`
 - `elixirr-workspace-manager/scripts/capture-meeting-transcript.sh`
 
@@ -154,6 +171,28 @@ Follow-up question behavior:
 - yes, this skill should ask short follow-up questions when filing details are missing
 - typical examples are client, whether the meeting is client-wide or project-specific, project name, or meeting date
 - it should avoid long questionnaires and only ask what is needed to save the note correctly
+
+### `elixirr-memory-refresh`
+
+Use this to refresh `working-memory/current.md` from the latest project signals.
+
+Primary use cases:
+
+- promoting important signals from meetings into live working memory
+- rolling up automation outputs into current project state
+- incorporating relevant Slack and Teams summaries
+- using manual exports only when they contain signal not yet summarized elsewhere
+
+### `elixirr-follow-up-comms`
+
+Use this to turn a meeting note into an outbound communication or task artifact.
+
+Primary use cases:
+
+- drafting a Slack follow-up from a meeting note
+- drafting a Teams follow-up from a meeting note
+- drafting an email recap from a meeting note
+- turning a meeting note into a task list
 
 ## Meeting Paths
 
@@ -204,6 +243,7 @@ Projects now include:
 Recommended use:
 
 - keep channel routing in `clients/<client>/slack/channel-map.md`
+- use `create-channel-workspace.sh` to create `context.md`, `manual-exports/`, and `outputs/` for individual client channels
 - store copied or exported raw Slack material under `projects/<project>/manual-exports/slack/`
 - store client-level Slack summaries under `clients/<client>/slack/channels/<channel>/outputs/`
 - store project-relevant Slack summaries under `projects/<project>/outputs/slack/<channel>/`
@@ -235,6 +275,15 @@ Recommended promotion rules:
 - issue triage updates `Active Priorities`, `Open Questions`, `Next Actions`
 - weekly summaries refresh `Current Focus`, `Active Priorities`, `Recent Changes`
 - Slack monitors update `Latest Signals`, `Open Questions`, and `Risks / Blockers`
+- Teams monitors update `Latest Signals`, `Open Questions`, and `Risks / Blockers`
+
+Template helpers now exist for:
+
+- `standup-summary`
+- `daily-bug-scan`
+- `issue-triage`
+- `skill-progression-map`
+- `weekly-engineering-summary`
 
 ## Teams
 
@@ -250,6 +299,7 @@ Projects now include:
 Recommended use:
 
 - keep Teams routing in `clients/<client>/teams/channel-map.md`
+- use `create-channel-workspace.sh` to create `context.md`, `manual-exports/`, and `outputs/` for individual client channels
 - store copied or exported raw Teams material under `projects/<project>/manual-exports/teams/`
 - store client-level Teams summaries under `clients/<client>/teams/channels/<channel>/outputs/`
 - store project-relevant Teams summaries under `projects/<project>/outputs/teams/<channel>/`
@@ -274,12 +324,31 @@ Recommended locations:
   `clients/<client>/projects/<project>/manual-exports/slack/YYYY-MM-DD-<channel>.md`
 - project Teams export:
   `clients/<client>/projects/<project>/manual-exports/teams/YYYY-MM-DD-<channel>.md`
+- client Slack channel export:
+  `clients/<client>/slack/channels/<channel>/manual-exports/YYYY-MM-DD.md`
+- client Teams channel export:
+  `clients/<client>/teams/channels/<channel>/manual-exports/YYYY-MM-DD.md`
+
+Manual export templates:
+
+- Slack:
+  `elixirr-workspace-manager/templates/slack-manual-export.md`
+- Teams:
+  `elixirr-workspace-manager/templates/teams-manual-export.md`
 
 Recommended rule:
 
 - `manual-exports/` = raw copied/exported source material
 - `outputs/slack/` and `outputs/teams/` = processed daily summaries or monitor outputs
 - `working-memory/current.md` = promoted signals that matter now
+
+Suggested manual capture flow:
+
+1. copy the relevant Slack or Teams conversation
+2. paste it into the matching manual export template
+3. save it under the correct `manual-exports/` folder
+4. create or update a processed summary under `outputs/slack/` or `outputs/teams/`
+5. use `elixirr-memory-refresh` to promote the important signals into `working-memory/current.md`
 
 ## Shared Meeting Format
 
@@ -321,6 +390,18 @@ For meeting capture:
 1. Create the meeting note shell with `create-meeting-note.sh`, or use `capture-meeting-transcript.sh` if you already have a transcript.
 2. Use `elixirr-meeting-writer` when you want a finished note drafted from the transcript.
 3. Use `elixirr-meeting-notes` for lighter formatting or updates to an existing note.
+
+For memory refresh:
+
+1. Review the latest meetings, automation outputs, and communication summaries.
+2. Use `elixirr-memory-refresh` to update `working-memory/current.md`.
+3. Promote only the signals that still matter now.
+
+For follow-up communication:
+
+1. Start from a saved meeting note.
+2. Use `elixirr-follow-up-comms` to draft a Slack message, Teams message, email, or task list.
+3. Save the output under `outputs/communications/` if needed.
 
 ## Git Workflow
 

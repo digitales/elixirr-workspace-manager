@@ -12,6 +12,8 @@ Use this skill when the user wants to create or extend the Elixirr directory str
 - For top-level setup, use `scripts/init-elixirr.sh [root-dir]`
 - For a new client, use `scripts/new-client.sh <client-slug> [root-dir]`
 - For a new project, use `scripts/new-project.sh <client-slug> <project-slug> [root-dir]`
+- For a new client communication channel workspace, use `scripts/create-channel-workspace.sh --client <client-slug> --platform slack|teams --channel <channel-name> [--root <root-dir>]`
+- For a new recurring automation output shell, use `scripts/create-automation-output.sh --client <client-slug> --project <project-slug> --automation <automation-name> --date <YYYY-MM-DD|YYYY-Www> [--root <root-dir>]`
 - For a new meeting note shell, use `scripts/create-meeting-note.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>]`
 - For a note plus transcript capture in one step, use `scripts/capture-meeting-transcript.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>] [--transcript-file <path>]`
 
@@ -37,11 +39,22 @@ For combined transcript capture:
 2. The helper creates the note if needed and writes the transcript into the `## Transcript` section.
 3. Then use `elixirr-meeting-notes` to summarize and complete the structured sections if requested.
 
+For channel setup:
+
+1. Use `create-channel-workspace.sh` when a client Slack or Teams channel needs a durable home.
+2. The helper creates `context.md`, `manual-exports/`, and `outputs/` under the client channel path.
+
+For recurring automation outputs:
+
+1. Use `create-automation-output.sh` when a project needs a dated shell for a known automation.
+2. The helper selects the best matching template for standups, bug scans, issue triage, progression maps, and weekly summaries.
+
 ## Structure Rules
 
 - Client-wide context lives under `clients/<client>/context/`
 - Client-wide Slack mappings and channel outputs live under `clients/<client>/slack/`
 - Client-wide Teams mappings and channel outputs live under `clients/<client>/teams/`
+- Client channel raw exports should usually live under `clients/<client>/slack/channels/<channel>/manual-exports/` or `clients/<client>/teams/channels/<channel>/manual-exports/`
 - Client-wide meetings live under `clients/<client>/meetings/`
 - Project-specific context lives under `clients/<client>/projects/<project>/context/`
 - Project working memory lives under `clients/<client>/projects/<project>/working-memory/`
@@ -51,6 +64,7 @@ For combined transcript capture:
 - Automation outputs should usually live under `outputs/automations/<automation-name>/`
 - Project Slack summaries should usually live under `outputs/slack/<channel-name>/`
 - Project Teams summaries should usually live under `outputs/teams/<channel-name>/`
+- Project automation templates should usually be created under `outputs/automations/<automation-name>/`
 - Meeting templates in this skill should match the structure used by `elixirr-meeting-notes`:
   `Summary`, `Decisions`, `Action Items`, `Risks / Blockers`, `References`, and `Transcript`
 
