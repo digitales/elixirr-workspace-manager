@@ -57,6 +57,7 @@ CHANNEL_SLUG="$(slugify "$CHANNEL_NAME")"
 CHANNEL_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/$PLATFORM/channels/$CHANNEL_SLUG"
 
 mkdir -p "$CHANNEL_DIR/manual-exports"
+mkdir -p "$CHANNEL_DIR/manual-exports/archive"
 mkdir -p "$CHANNEL_DIR/outputs"
 
 TARGET_CONTEXT="$CHANNEL_DIR/context.md"

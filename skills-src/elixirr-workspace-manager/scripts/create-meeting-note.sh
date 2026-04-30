@@ -70,13 +70,21 @@ MEETING_SLUG="$(slugify "$MEETING_NAME")"
 
 case "$SCOPE" in
   recurring)
-    TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/meetings/recurring/$MEETING_SLUG"
+    if [[ "$CLIENT_SLUG" == "internal" ]]; then
+      TARGET_DIR="$ROOT_DIR/internal/meetings/recurring/$MEETING_SLUG"
+    else
+      TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/meetings/recurring/$MEETING_SLUG"
+    fi
     TARGET_FILE="$TARGET_DIR/$DATE_VALUE.md"
     TEMPLATE_FILE="$TEMPLATE_DIR/meeting-note.md"
     PROJECT_NAME_VALUE="none"
     ;;
   adhoc)
-    TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/meetings/ad-hoc"
+    if [[ "$CLIENT_SLUG" == "internal" ]]; then
+      TARGET_DIR="$ROOT_DIR/internal/meetings/ad-hoc"
+    else
+      TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/meetings/ad-hoc"
+    fi
     TARGET_FILE="$TARGET_DIR/$DATE_VALUE-$MEETING_SLUG.md"
     TEMPLATE_FILE="$TEMPLATE_DIR/meeting-note.md"
     PROJECT_NAME_VALUE="none"
@@ -86,7 +94,11 @@ case "$SCOPE" in
       printf 'Project scope requires --project <project-slug>\n' >&2
       exit 1
     fi
-    TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/projects/$PROJECT_SLUG/meetings/$MEETING_SLUG"
+    if [[ "$CLIENT_SLUG" == "internal" ]]; then
+      TARGET_DIR="$ROOT_DIR/internal/projects/$PROJECT_SLUG/meetings/$MEETING_SLUG"
+    else
+      TARGET_DIR="$ROOT_DIR/clients/$CLIENT_SLUG/projects/$PROJECT_SLUG/meetings/$MEETING_SLUG"
+    fi
     TARGET_FILE="$TARGET_DIR/$DATE_VALUE.md"
     TEMPLATE_FILE="$TEMPLATE_DIR/project-meeting-note.md"
     PROJECT_NAME_VALUE="$PROJECT_SLUG"

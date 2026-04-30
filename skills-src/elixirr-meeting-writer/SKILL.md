@@ -47,10 +47,17 @@ Prefer at most one or two concise follow-up questions. Only ask when the missing
   `clients/<client>/meetings/ad-hoc/YYYY-MM-DD-<meeting-topic>.md`
 - Project meetings:
   `clients/<client>/projects/<project>/meetings/<meeting-name>/YYYY-MM-DD.md`
+- Internal recurring meetings:
+  `internal/meetings/recurring/<meeting-name>/YYYY-MM-DD.md`
+- Internal ad hoc meetings:
+  `internal/meetings/ad-hoc/YYYY-MM-DD-<meeting-topic>.md`
+- Internal project meetings:
+  `internal/projects/<project>/meetings/<meeting-name>/YYYY-MM-DD.md`
 
 Default to `recurring` for named series like standups, weekly check-ins, or leadership meetings.
 Default to `ad-hoc` for one-off meetings without a standing series.
 Default to `project` when a project slug is provided.
+Treat `client: internal` as the special internal workspace, not as a client folder under `clients/`.
 
 ## Workflow
 

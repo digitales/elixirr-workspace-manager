@@ -4,6 +4,10 @@ This folder is the git-tracked source of truth for the Elixirr Codex skills.
 
 Installed runtime copies live in `~/.codex/skills/`, but the versions in this folder are the ones to edit, review, and commit.
 
+The recommended automation trigger model is documented in:
+
+- `skills-src/AUTOMATION-SPEC.md`
+
 ## Changes So Far
 
 The Elixirr skill set has been extended from a basic client/project scaffold into a broader operational workspace model.
@@ -12,6 +16,7 @@ Current capabilities added so far:
 
 - top-level Elixirr workspace initialization
 - client scaffolding with reusable client context
+- client `working-memory/` scaffolding for client-level live memory
 - project scaffolding with context, meetings, outputs, and automations folders
 - project `working-memory/` scaffolding for live operational memory
 - client Slack scaffolding with `channel-map.md`
@@ -23,6 +28,7 @@ Current capabilities added so far:
 - transcript capture helpers for creating a meeting note and inserting transcript content
 - end-to-end meeting writing skill for turning pasted transcripts into finished saved notes
 - recurring automation output shells for standups, bug scans, triage, progression maps, and weekly summaries
+- communication normalization skill for processing raw Slack and Teams exports into output summaries
 - working-memory refresh skill for promoting important signals into live project memory
 - working-memory bootstrap skill for bringing legacy project history into the v2 model
 - follow-up communication skill for Slack, Teams, email, and task-list outputs
@@ -51,6 +57,8 @@ These skills support an Elixirr workspace structure organized around:
 
 - `shared/` for reusable prompts, templates, and reference material
 - `clients/<client>/context/` for client-wide context
+- `clients/<client>/working-memory/` for client-wide live memory
+- `clients/<client>/outputs/automations/` for client-wide automation outputs
 - `clients/<client>/slack/` for channel mappings and client-level Slack outputs
 - `clients/<client>/teams/` for channel mappings and client-level Teams outputs
 - `clients/<client>/meetings/` for client-wide meetings
@@ -85,6 +93,8 @@ Primary use cases:
 
 - creating a new client folder
 - creating client context files such as `index.md`, `people.md`, and `preferences.md`
+- creating client-level `working-memory/` files
+- creating client-level `outputs/automations/` and `outputs/communications/`
 - creating a client Slack map at `slack/channel-map.md`
 - creating a client Teams map at `teams/channel-map.md`
 - preparing client-wide `meetings/` and `projects/` folders
@@ -175,7 +185,7 @@ Follow-up question behavior:
 
 ### `elixirr-memory-refresh`
 
-Use this to refresh `working-memory/current.md` from the latest project signals.
+Use this to refresh `working-memory/current.md` from the latest client-level or project-level signals.
 
 Primary use cases:
 
@@ -183,10 +193,11 @@ Primary use cases:
 - rolling up automation outputs into current project state
 - incorporating relevant Slack and Teams summaries
 - using manual exports only when they contain signal not yet summarized elsewhere
+- supporting both client-level and project-level memory refresh
 
 ### `elixirr-memory-bootstrap`
 
-Use this to create an initial working-memory baseline for an existing project with substantial history.
+Use this to create an initial working-memory baseline for an existing client or project with substantial history.
 
 Primary use cases:
 
@@ -194,6 +205,7 @@ Primary use cases:
 - condensing long Slack or Teams history into a usable baseline
 - producing historical summary files before creating `working-memory/current.md`
 - creating a current-state snapshot without replaying every raw message
+- supporting both client-level and project-level bootstrap baselines
 
 ### `elixirr-follow-up-comms`
 
@@ -206,6 +218,41 @@ Primary use cases:
 - drafting an email recap from a meeting note
 - turning a meeting note into a task list
 
+### `elixirr-comms-normalizer`
+
+Use this to process raw Slack and Teams exports from `manual-exports/` into processed summaries.
+
+Primary use cases:
+
+- converting pasted Slack or Teams markdown into normalized output summaries
+- converting Slack JSON exports into normalized output summaries
+- processing all unarchived raw communication files in a target manual-export directory
+- archiving processed raw files so they are not reprocessed
+
+## Automation Pattern
+
+Recommended pipeline:
+
+1. raw files arrive in `manual-exports/`
+2. `elixirr-comms-normalizer` processes them into `outputs/slack/` or `outputs/teams/`
+3. processed outputs, meetings, and automation summaries trigger `elixirr-memory-refresh`
+4. `working-memory/current.md` is updated from processed signals
+
+Recommended trigger directories:
+
+- raw comms normalizer:
+  - `manual-exports/slack/`
+  - `manual-exports/teams/`
+- memory refresh:
+  - `meetings/`
+  - `outputs/automations/`
+  - `outputs/slack/`
+  - `outputs/teams/`
+
+Recommended exclusion:
+
+- ignore any `archive/` directories when scanning raw communication folders
+
 ## Meeting Paths
 
 The skills use these standard destinations:
@@ -216,10 +263,25 @@ The skills use these standard destinations:
   `clients/<client>/meetings/ad-hoc/YYYY-MM-DD-<meeting-topic>.md`
 - Project meeting:
   `clients/<client>/projects/<project>/meetings/<meeting-name>/YYYY-MM-DD.md`
+- Internal recurring meeting:
+  `internal/meetings/recurring/<meeting-name>/YYYY-MM-DD.md`
+- Internal ad hoc meeting:
+  `internal/meetings/ad-hoc/YYYY-MM-DD-<meeting-topic>.md`
+- Internal project meeting:
+  `internal/projects/<project>/meetings/<meeting-name>/YYYY-MM-DD.md`
+
+Use `client: internal` when the meeting belongs in the internal workspace. That value should route to `internal/`, not to `clients/internal/`.
 
 ## Working Memory
 
-Projects now include:
+Clients now include:
+
+- `working-memory/current.md`
+- `working-memory/backlog.md`
+- `working-memory/risks.md`
+- `working-memory/timeline.md`
+
+Projects also include:
 
 - `working-memory/current.md`
 - `working-memory/backlog.md`
@@ -240,6 +302,12 @@ Recommended agent loading order:
 3. latest relevant meeting note
 4. latest relevant automation output
 5. latest relevant Slack or Teams summary
+
+For client-only work such as Mastercard:
+
+- use `clients/<client>/working-memory/current.md`
+- use `clients/<client>/outputs/automations/`
+- use client channel summaries under `clients/<client>/slack/channels/` and `clients/<client>/teams/channels/`
 
 ## Slack
 
@@ -351,6 +419,7 @@ Manual export templates:
 Recommended rule:
 
 - `manual-exports/` = raw copied/exported source material
+- `manual-exports/.../archive/` = processed raw files kept for recordkeeping
 - `outputs/slack/` and `outputs/teams/` = processed daily summaries or monitor outputs
 - `working-memory/current.md` = promoted signals that matter now
 
@@ -359,8 +428,9 @@ Suggested manual capture flow:
 1. copy the relevant Slack or Teams conversation
 2. paste it into the matching manual export template
 3. save it under the correct `manual-exports/` folder
-4. create or update a processed summary under `outputs/slack/` or `outputs/teams/`
-5. use `elixirr-memory-refresh` to promote the important signals into `working-memory/current.md`
+4. use `elixirr-comms-normalizer` to create or update a processed summary under `outputs/slack/` or `outputs/teams/`
+5. the raw source file should be moved into `archive/` after successful processing
+6. use `elixirr-memory-refresh` to promote the important signals into `working-memory/current.md`
 
 ## Shared Meeting Format
 
@@ -409,12 +479,19 @@ For memory refresh:
 2. Use `elixirr-memory-refresh` to update `working-memory/current.md`.
 3. Promote only the signals that still matter now.
 
+For automated refresh:
+
+1. trigger `elixirr-comms-normalizer` when new files arrive in `manual-exports/slack/` or `manual-exports/teams/`
+2. trigger `elixirr-memory-refresh` when new files arrive in `meetings/`, `outputs/automations/`, `outputs/slack/`, or `outputs/teams/`
+3. debounce refresh slightly if multiple files arrive close together
+
 For legacy project onboarding:
 
 1. scaffold the client and project into the v2 structure
 2. place large historical source material into `manual-exports/` or reuse existing notes
-3. use `elixirr-memory-bootstrap` to create one or more historical summaries and an initial `working-memory/current.md`
-4. then switch to `elixirr-memory-refresh` for normal ongoing updates
+3. use `elixirr-comms-normalizer` to process raw Slack and Teams exports into historical summaries
+4. use `elixirr-memory-bootstrap` to create one or more historical summaries and an initial `working-memory/current.md`
+5. then switch to `elixirr-memory-refresh` for normal ongoing updates
 
 For follow-up communication:
 

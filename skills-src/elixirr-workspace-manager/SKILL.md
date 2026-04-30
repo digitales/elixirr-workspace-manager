@@ -16,6 +16,7 @@ Use this skill when the user wants to create or extend the Elixirr directory str
 - For a new recurring automation output shell, use `scripts/create-automation-output.sh --client <client-slug> --project <project-slug> --automation <automation-name> --date <YYYY-MM-DD|YYYY-Www> [--root <root-dir>]`
 - For a new meeting note shell, use `scripts/create-meeting-note.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>]`
 - For a note plus transcript capture in one step, use `scripts/capture-meeting-transcript.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>] [--transcript-file <path>]`
+- For archiving a processed raw communication export, use `scripts/archive-manual-export.sh <manual-export-file>`
 
 Default the root directory to `~/Documents/elixirr` unless the user specifies another location.
 
@@ -52,9 +53,12 @@ For recurring automation outputs:
 ## Structure Rules
 
 - Client-wide context lives under `clients/<client>/context/`
+- Client-wide working memory lives under `clients/<client>/working-memory/`
+- Client-wide automation outputs live under `clients/<client>/outputs/automations/`
 - Client-wide Slack mappings and channel outputs live under `clients/<client>/slack/`
 - Client-wide Teams mappings and channel outputs live under `clients/<client>/teams/`
 - Client channel raw exports should usually live under `clients/<client>/slack/channels/<channel>/manual-exports/` or `clients/<client>/teams/channels/<channel>/manual-exports/`
+- Processed raw communication exports should be moved into the sibling `archive/` folder so they are not reprocessed
 - Client-wide meetings live under `clients/<client>/meetings/`
 - Project-specific context lives under `clients/<client>/projects/<project>/context/`
 - Project working memory lives under `clients/<client>/projects/<project>/working-memory/`

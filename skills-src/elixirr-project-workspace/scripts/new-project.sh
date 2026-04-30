@@ -26,7 +26,9 @@ mkdir -p "$PROJECT_DIR/outputs/communications"
 mkdir -p "$PROJECT_DIR/outputs/slack"
 mkdir -p "$PROJECT_DIR/outputs/teams"
 mkdir -p "$PROJECT_DIR/manual-exports/slack"
+mkdir -p "$PROJECT_DIR/manual-exports/slack/archive"
 mkdir -p "$PROJECT_DIR/manual-exports/teams"
+mkdir -p "$PROJECT_DIR/manual-exports/teams/archive"
 mkdir -p "$PROJECT_DIR/automations"
 
 copy_template() {
