@@ -68,6 +68,32 @@ Optional flags:
 - `--copy-all` to copy every matching file instead of only the latest
 - `--overwrite` to replace an existing destination file with the same name
 
+## Shared Sync
+
+For a stable multi-repo sync into Elixirr client folders, use:
+
+```bash
+python3 scripts/sync_automation_outputs.py \
+  --mapping repo-name /path/to/repo/outputs/automations/repo-name /path/to/client/outputs/automations/repo-name
+```
+
+Repeat `--mapping` for each repo you want to sync. Each mapping is:
+
+- `NAME SOURCE DESTINATION`
+
+Do not commit client-specific mappings into the skill source or repo automation templates.
+
+Keep real mappings in one of these local-only places instead:
+
+- the installed automation prompt under `~/.codex/automations/elixirr-output-sync/automation.toml`
+- a private local file passed with `--config /path/to/private-sync-mappings.json`
+
+The preferred automation setup is to include the mappings directly in the local automation prompt or command.
+
+Each shared sync should point its code repository at its own destination subfolder under:
+
+- `clients/<client>/outputs/automations/<repo-name>/`
+
 ## Output
 
 The result should be:

@@ -1,0 +1,13 @@
+version = 1
+id = "elixirr-output-sync"
+kind = "cron"
+name = "Elixirr Output Sync"
+prompt = "Sync repo-local automation outputs into the Elixirr client outputs using the shared publisher helper.\n\nThis committed automation file is intentionally generic and must not include client-specific mappings.\nIn your local installed automation under ~/.codex/automations/elixirr-output-sync/automation.toml, add the real mappings directly to the command with repeated --mapping NAME SOURCE DESTINATION arguments.\n\nCommand shape:\npython3 /Users/rosstweedie/.codex/skills/elixirr-automation-output-publisher/scripts/sync_automation_outputs.py \\\n  --mapping RepoName /path/to/repo/outputs/automations/repo-name /path/to/client/outputs/automations/repo-name\n\nTreat the mappings in the local ~/.codex automation prompt as the source of truth rather than relying on committed config.\nCopy all matching markdown files from each repo-specific outputs/automations/<repo-name>/ folder into the matching Elixirr clients/<client>/outputs/automations/<repo-name>/ folder.\nCreate destination folders if needed. Do not overwrite same-name files. Return a short status summary of what copied, skipped, or failed."
+status = "ACTIVE"
+rrule = "FREQ=HOURLY;INTERVAL=1"
+model = "gpt-5.4"
+reasoning_effort = "medium"
+execution_environment = "local"
+cwds = ["/Users/rosstweedie/Documents/elixirr"]
+created_at = 1777560000000
+updated_at = 1777560000000
