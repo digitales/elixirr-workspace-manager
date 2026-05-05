@@ -123,7 +123,7 @@ Use this to create the top-level Elixirr workspace.
 
 Primary use cases:
 
-- first-time setup of `~/Documents/elixirr`
+- first-time setup of the local Elixirr workspace root
 - creating `shared/`, `clients/`, and `internal/`
 - bootstrapping the folder structure before any clients or projects exist
 
@@ -231,7 +231,7 @@ Follow-up question behavior:
 
 ### `elixirr-raw-meeting-dropzone`
 
-Use this for folder-driven transcript ingestion from `~/Documents/elixirr/raw-meetings`.
+Use this for folder-driven transcript ingestion from the `raw-meetings/` folder under the local Elixirr workspace root.
 
 Primary use cases:
 
@@ -533,7 +533,7 @@ For meeting capture:
 
 For raw meeting drop-zone automation:
 
-1. Use `elixirr-raw-meeting-dropzone` when transcripts land in `~/Documents/elixirr/raw-meetings`.
+1. Use `elixirr-raw-meeting-dropzone` when transcripts land in the `raw-meetings/` folder under the local Elixirr workspace root.
 2. Start with `scan-raw-meetings-dropzone.sh` to create the drop zone if needed and list queued transcripts.
 3. Use `capture-meeting-transcript.sh` plus `elixirr-meeting-notes` for each queued file.
 4. Archive the raw transcript only after the structured note is saved successfully.

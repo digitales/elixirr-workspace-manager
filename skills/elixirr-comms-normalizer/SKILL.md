@@ -99,7 +99,7 @@ python3 scripts/normalize_client_exports.py
 Optional root override:
 
 ```bash
-python3 scripts/normalize_client_exports.py --root ~/Documents/elixirr
+python3 scripts/normalize_client_exports.py --root /path/to/elixirr-workspace
 ```
 
 The script should:

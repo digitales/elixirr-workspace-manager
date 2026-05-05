@@ -1,6 +1,6 @@
 ---
 name: elixirr-client-workspace
-description: Create and maintain an Elixirr client workspace scaffold under ~/Documents/elixirr or a user-specified root. Use when the user asks to create a new client folder, initialize client context, set up client-wide meetings folders, or scaffold client structures for future automation and agent outputs.
+description: Create and maintain an Elixirr client workspace scaffold under the default local workspace root or a user-specified root. Use when the user asks to create a new client folder, initialize client context, set up client-wide meetings folders, or scaffold client structures for future automation and agent outputs.
 ---
 
 # Elixirr Client Workspace
@@ -11,7 +11,7 @@ Use this skill when the user wants a new client scaffold in the Elixirr workspac
 
 1. Confirm the client slug from the user request.
 2. Use `scripts/new-client.sh <client-slug> [root-dir]`.
-3. Default the root directory to `~/Documents/elixirr` unless the user specifies another location.
+3. Default the root directory to the local Elixirr workspace root unless the user specifies another location.
 4. After running the script, report the created client path and point the user to `context/index.md` as the context entrypoint.
 
 ## Notes

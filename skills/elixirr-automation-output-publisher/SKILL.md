@@ -32,8 +32,8 @@ Use this skill with:
 
 Examples:
 
-- source: `/Users/rosstweedie/Sites/dezeen-jobs-2016/.codex-automation`
-- destination: `/Users/rosstweedie/Documents/elixirr/clients/dezeen/outputs/automations/dezeen-jobs`
+- source: `/path/to/project/.codex-automation`
+- destination: `/path/to/elixirr-workspace/clients/client-name/outputs/automations/automation-name`
 
 ## Selection Rules
 
@@ -85,7 +85,7 @@ Do not commit client-specific mappings into the skill source or repo automation 
 
 Keep real mappings in one of these local-only places instead:
 
-- the installed automation prompt under `~/.codex/automations/elixirr-output-sync/automation.toml`
+- the installed automation prompt under `<CODEX_HOME>/automations/elixirr-output-sync/automation.toml`
 - a private local file passed with `--config /path/to/private-sync-mappings.json`
 
 The preferred automation setup is to include the mappings directly in the local automation prompt or command.

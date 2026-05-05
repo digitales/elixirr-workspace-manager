@@ -1,6 +1,6 @@
 ---
 name: elixirr-workspace-manager
-description: Manage an Elixirr workspace under ~/Documents/elixirr or a user-specified root. Use when the user asks to initialize the top-level Elixirr structure, create a new client workspace, or create a new project workspace inside a client. This skill owns the full scaffold workflow and includes all supporting bash scripts and templates.
+description: Manage an Elixirr workspace under the default local workspace root or a user-specified root. Use when the user asks to initialize the top-level Elixirr structure, create a new client workspace, or create a new project workspace inside a client. This skill owns the full scaffold workflow and includes all supporting bash scripts and templates.
 ---
 
 # Elixirr Workspace Manager
@@ -20,7 +20,7 @@ Use this skill when the user wants to create or extend the Elixirr directory str
 - For raw meeting drop-zone discovery, use `scripts/scan-raw-meetings-dropzone.sh [--root <root-dir>] [--dropzone <raw-meetings-dir>]`
 - For archiving a processed raw meeting transcript, use `scripts/archive-raw-meeting-transcript.sh <source-file> [--root <root-dir>] [--dropzone <raw-meetings-dir>]`
 
-Default the root directory to `~/Documents/elixirr` unless the user specifies another location.
+Default the root directory to the local Elixirr workspace root unless the user specifies another location.
 
 ## Workflow
 
@@ -44,7 +44,7 @@ For combined transcript capture:
 
 For raw meeting drop-zone support:
 
-1. Use `scan-raw-meetings-dropzone.sh` to ensure `~/Documents/elixirr/raw-meetings` exists and to list unarchived markdown transcripts.
+1. Use `scan-raw-meetings-dropzone.sh` to ensure the `raw-meetings/` folder exists under the local Elixirr workspace root and to list unarchived markdown transcripts.
 2. Treat files in `raw-meetings/<client>/` as client-wide meeting sources.
 3. For root-level files, infer the client from the longest matching client slug in `clients/`.
 4. Route unmatched files to `internal/meetings/`.

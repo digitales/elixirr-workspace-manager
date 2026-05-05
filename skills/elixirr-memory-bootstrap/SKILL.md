@@ -130,7 +130,7 @@ Example:
 
 ```bash
 python3 scripts/write_bootstrap_memory.py \
-  --workspace-root ~/Documents/elixirr \
+  --workspace-root /path/to/elixirr-workspace \
   --input /tmp/bootstrap-spec.json
 ```
 

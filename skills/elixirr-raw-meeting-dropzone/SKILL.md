@@ -1,11 +1,11 @@
 ---
 name: elixirr-raw-meeting-dropzone
-description: Watch or batch-process the `~/Documents/elixirr/raw-meetings` drop zone, infer client-scoped meeting transcripts, and turn them into structured Elixirr meeting notes with the original raw files archived after success.
+description: Watch or batch-process the `raw-meetings/` drop zone under the local Elixirr workspace root, infer client-scoped meeting transcripts, and turn them into structured Elixirr meeting notes with the original raw files archived after success.
 ---
 
 # Elixirr Raw Meeting Dropzone
 
-Use this skill when the user wants a Codex automation or manual batch pass over raw meeting transcripts dropped into `~/Documents/elixirr/raw-meetings`.
+Use this skill when the user wants a Codex automation or manual batch pass over raw meeting transcripts dropped into the `raw-meetings/` folder under the local Elixirr workspace root.
 
 ## Goal
 
@@ -39,7 +39,7 @@ The helper should be the source of truth for basic routing metadata.
 
 Interpret results this way:
 
-- `client_slug` comes from the parent folder when that folder matches a client under `~/Documents/elixirr/clients/`
+- `client_slug` comes from the parent folder when that folder matches a client under the local Elixirr workspace `clients/` directory
 - otherwise, try to match the longest client slug prefix from the filename
 - if no client match is found, route the note to `internal`
 - `meeting_name` is the remaining filename slug after removing the client prefix and trailing date
