@@ -181,15 +181,25 @@ Should this happen once, or automatically from now on?</code></pre>
           <div class="setup-grid">
             <article class="setup-card">
               <span class="setup-step">Step 1</span>
-              <h3>Create the workspace</h3>
-              <p>Use the foundation scaffold before any client-specific automation work. The workspace root is typically `~/Documents/elixirr` on macOS and `%USERPROFILE%\Documents\elixirr` on Windows.</p>
-              <pre><code>./scripts/init-elixirr.sh
-./scripts/new-client.sh mastercard
-./scripts/new-project.sh mastercard platform-refresh</code></pre>
+              <h3>Download and extract the package</h3>
+              <p>Start by downloading the latest package zip from GitHub Releases and extracting it anywhere locally. This gives the team the skills, docs, automations, and installers in one portable folder.</p>
             </article>
 
             <article class="setup-card">
               <span class="setup-step">Step 2</span>
+              <h3>Run the installer</h3>
+              <p>Use the installer that matches your platform. The Elixirr workspace root is typically `~/Documents/elixirr` on macOS and `%USERPROFILE%\Documents\elixirr` on Windows.</p>
+              <pre><code>macOS / Linux
+cd /path/to/extracted-package
+bash ./skills/scripts/install.sh
+
+Windows PowerShell
+cd C:\path\to\extracted-package
+pwsh -File .\skills\scripts\install.ps1</code></pre>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Step 3</span>
               <h3>Document the durable context</h3>
               <p>
                 Fill the entrypoints first so downstream meeting notes and memory refreshes
@@ -203,7 +213,7 @@ Should this happen once, or automatically from now on?</code></pre>
             </article>
 
             <article class="setup-card">
-              <span class="setup-step">Step 3</span>
+              <span class="setup-step">Step 4</span>
               <h3>Wire the intake paths</h3>
               <p>Give raw source material a predictable landing zone.</p>
               <ul class="compact-list">
@@ -214,7 +224,7 @@ Should this happen once, or automatically from now on?</code></pre>
             </article>
 
             <article class="setup-card">
-              <span class="setup-step">Step 4</span>
+              <span class="setup-step">Step 5</span>
               <h3>Turn on the recurring jobs</h3>
               <p>These two automations demonstrate the intended cadence once the team is ready for background workflows.</p>
               <ul class="compact-list">
@@ -239,7 +249,7 @@ Should this happen once, or automatically from now on?</code></pre>
             <article class="setup-card">
               <span class="setup-step">Package</span>
               <h3>Local skill package</h3>
-              <p>This skills folder contains the skill definitions, docs, and installer scripts used to refresh a local Codex install.</p>
+              <p>This package is designed to be downloaded, extracted locally, and used in place. It contains the skill definitions, docs, and installer scripts used to refresh a local Codex install.</p>
               <ul class="compact-list">
                 <li>`skills/&lt;skill-name&gt;/` contains each skill definition</li>
                 <li>`skills/scripts/` contains the macOS/Linux and Windows installers</li>
@@ -262,7 +272,7 @@ Should this happen once, or automatically from now on?</code></pre>
               <span class="setup-step">Refresh</span>
               <h3>Installer scripts for each platform</h3>
               <p>
-                The simplest team path is to use the local installer script for their platform.
+                The simplest team path is to download the package, extract it, open a terminal in that folder, and use the installer script for their platform.
                 Under the hood, both installers follow the same refresh model: copy updated
                 skill folders or files into the local Codex skills directory, then copy or
                 update the matching automation TOMLs in the local Codex automations directory.
@@ -272,10 +282,12 @@ cp -R skills/elixirr-raw-meeting-dropzone ~/.codex/skills/
 cp automations/elixirr-raw-meeting-dropzone/automation.toml \
   ~/.codex/automations/elixirr-raw-meeting-dropzone/automation.toml</code></pre>
               <pre><code>macOS / Linux
+cd /path/to/extracted-package
 bash ./skills/scripts/install.sh
 bash ./skills/scripts/install.sh --dry-run
 
 Windows PowerShell
+cd C:\path\to\extracted-package
 pwsh -File .\skills\scripts\install.ps1
 pwsh -File .\skills\scripts\install.ps1 -DryRun</code></pre>
             </article>

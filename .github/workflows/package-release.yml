@@ -1,0 +1,40 @@
+name: Package Skills
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build package zip
+        id: build
+        run: |
+          mkdir -p dist
+          PACKAGE_NAME="elixirr-skills-package"
+          if [ "${{ github.event_name }}" = "release" ]; then
+            PACKAGE_NAME="${PACKAGE_NAME}-${{ github.event.release.tag_name }}"
+          fi
+          bash ./skills/scripts/package.sh --output-dir ./dist --name "${PACKAGE_NAME}"
+          echo "package_path=dist/${PACKAGE_NAME}.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: elixirr-skills-package
+          path: ${{ steps.build.outputs.package_path }}
+
+      - name: Attach zip to GitHub release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.build.outputs.package_path }}

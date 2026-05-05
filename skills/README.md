@@ -1,6 +1,6 @@
 # Elixirr Skills
 
-This folder contains the Elixirr Codex skills, docs, and local installer scripts.
+This folder is designed to work as a downloadable local package containing the Elixirr Codex skills, docs, and installer scripts.
 
 Installed runtime copies live in the local Codex home, typically `~/.codex/skills/` on macOS/Linux or `%USERPROFILE%\.codex\skills\` on Windows.
 
@@ -14,17 +14,24 @@ The demo-friendly guide for the wider team now lives in:
 
 ## Local Install
 
-Use the installer that matches the teammate's platform.
+Recommended user flow:
+
+1. Download the latest package zip from GitHub Releases.
+2. Extract it anywhere locally.
+3. Open a terminal in the extracted folder.
+4. Run the installer that matches the teammate's platform.
 
 ### macOS / Linux
 
 ```bash
+cd /path/to/extracted-package
 bash ./skills/scripts/install.sh
 ```
 
 Useful variants:
 
 ```bash
+cd /path/to/extracted-package
 bash ./skills/scripts/install.sh --dry-run
 bash ./skills/scripts/install.sh --skill elixirr-memory-refresh
 bash ./skills/scripts/install.sh --automations-only
@@ -33,18 +40,42 @@ bash ./skills/scripts/install.sh --automations-only
 ### Windows PowerShell
 
 ```powershell
+cd C:\path\to\extracted-package
 pwsh -File .\skills\scripts\install.ps1
 ```
 
 Useful variants:
 
 ```powershell
+cd C:\path\to\extracted-package
 pwsh -File .\skills\scripts\install.ps1 -DryRun
 pwsh -File .\skills\scripts\install.ps1 -Skill elixirr-memory-refresh
 pwsh -File .\skills\scripts\install.ps1 -AutomationsOnly
 ```
 
 Both installers copy the local skill folders into the Codex skills directory and copy any discovered automation templates into the Codex automations directory.
+
+## Package Creation
+
+Maintainers can create the same distributable zip locally.
+
+### macOS / Linux
+
+```bash
+bash ./skills/scripts/package.sh
+```
+
+### Windows PowerShell
+
+```powershell
+pwsh -File .\skills\scripts\package.ps1
+```
+
+The package zip is written to `dist/` and contains only:
+
+- `README.md`
+- `skills/`
+- `automations/`
 
 Typical paths:
 
