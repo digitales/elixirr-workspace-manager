@@ -1,53 +1,42 @@
-# Elixirr Workspace Scaffold
+# Elixirr Skills Package
 
-This folder contains small scripts and templates for creating an `elixirr` workspace that is organized by client and project.
+This repository is a lean local package for the Elixirr Codex setup.
 
-## Team Guide
+It now focuses on four things:
 
-A demo-friendly site that explains the automation operating model, setup flow, and skill catalogue now lives in:
+- `skills/` for the skill definitions
+- `skills/docs/` for the team-facing guide
+- `skills/scripts/` for the macOS/Linux and Windows installers
+- `automations/` for local automation templates
 
-- `skills-src/docs/index.html`
+## Open The Guide
 
-Open that file in a browser to walk the wider team through how the skills fit together.
+The main internal guide lives at:
 
-## Scripts
+- `skills/docs/index.html`
 
-- `scripts/init-elixirr.sh`: create the top-level workspace structure
-- `scripts/new-client.sh <client-slug> [root-dir]`: create a new client scaffold
-- `scripts/new-project.sh <client-slug> <project-slug> [root-dir]`: create a new project scaffold
+## Install Locally
 
-## Recommended Structure
-
-```text
-~/Documents/elixirr/
-  shared/
-  clients/
-    <client-name>/
-      context/
-      meetings/
-      projects/
-  internal/
-```
-
-## Example Usage
+### macOS / Linux
 
 ```bash
-chmod +x scripts/*.sh
-./scripts/init-elixirr.sh
-./scripts/new-client.sh acme
-./scripts/new-project.sh acme website-redesign
+bash ./skills/scripts/install.sh
 ```
 
-## Context Loading Order
+### Windows PowerShell
 
-1. `clients/<client>/context/index.md`
-2. `clients/<client>/projects/<project>/context/index.md` when relevant
-3. recent meeting notes when relevant
+```powershell
+pwsh -File .\skills\scripts\install.ps1
+```
 
-## Skills
+## Repo Shape
 
-Yes, a Codex skill can be created to call these scripts. A good pattern is:
-
-- the skill asks for a client slug and optional project slug
-- it runs the matching scaffold script
-- it returns the created paths and reminds the user where to add context
+```text
+.
+├── automations/
+├── skills/
+│   ├── docs/
+│   ├── scripts/
+│   └── <skill-name>/
+└── README.md
+```

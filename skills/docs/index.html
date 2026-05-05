@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elixirr Automation Skills</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar">
+          <a class="brand" href="#top">Elixirr Automation Skills</a>
+          <div class="topbar-links">
+            <a href="#setup">Setup</a>
+            <a href="#flow">Flow</a>
+            <a href="#skills">Skills</a>
+            <a href="#automations">Automations</a>
+          </div>
+        </nav>
+
+        <div class="hero-grid" id="top">
+          <section class="hero-copy">
+            <p class="eyebrow">Operating model for the wider team</p>
+            <h1>Turn the skill set into a workflow people can actually follow.</h1>
+            <p class="hero-text">
+              This guide formalises the Elixirr automation stack: how to set up the
+              workspace, where each artifact lives, what each skill is responsible
+              for, and how signals move from raw input to durable working memory.
+            </p>
+            <p class="hero-text">
+              For most teammates, the practical experience is much simpler: ask Codex
+              for the outcome you want, and let the skills and automations handle the
+              structure behind the scenes.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#non-technical">For Non-Technical Users</a>
+              <a class="button button-secondary" href="#setup">Start With Setup</a>
+              <a class="button button-secondary" href="#skills">Browse Skills</a>
+            </div>
+            <ul class="hero-points">
+              <li>One shared structure for clients, projects, meetings, and outputs</li>
+              <li>Clear separation between raw material, processed summaries, and live memory</li>
+              <li>Automation-first workflows without losing human-readable context</li>
+            </ul>
+          </section>
+
+          <aside class="hero-panel">
+            <p class="panel-label">Golden Rule</p>
+            <h2>Do not refresh memory from raw exports first.</h2>
+            <p>
+              Raw comms should be normalized into `outputs/` before they influence
+              `working-memory/current.md`.
+            </p>
+            <ol class="hero-flow">
+              <li>`manual-exports/`</li>
+              <li>`elixirr-comms-normalizer`</li>
+              <li>`outputs/slack` or `outputs/teams`</li>
+              <li>`elixirr-memory-refresh`</li>
+              <li>`working-memory/current.md`</li>
+            </ol>
+          </aside>
+        </div>
+      </header>
+
+      <main>
+        <section class="section" id="model">
+          <div class="section-heading">
+            <p class="eyebrow">Operating Model</p>
+            <h2>Five layers with distinct jobs</h2>
+            <p>
+              The system works best when each folder type does one thing well. This
+              keeps refresh logic predictable and makes the automations easier to trust.
+            </p>
+          </div>
+
+          <div class="pillars">
+            <article class="pillar">
+              <span class="pillar-number">01</span>
+              <h3>`context/`</h3>
+              <p>Durable truth: client background, project framing, decisions, people, sources.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">02</span>
+              <h3>`working-memory/`</h3>
+              <p>Live operational state: what matters now, what changed, what is blocked, what happens next.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">03</span>
+              <h3>`meetings/`</h3>
+              <p>Structured records of conversations, decisions, action items, and transcripts.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">04</span>
+              <h3>`outputs/`</h3>
+              <p>Processed summaries from automations, Slack, Teams, and agent-generated artifacts.</p>
+            </article>
+            <article class="pillar">
+              <span class="pillar-number">05</span>
+              <h3>`manual-exports/`</h3>
+              <p>Raw copied or exported source material waiting to be normalized or archived.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section section-contrast" id="non-technical">
+          <div class="section-heading">
+            <p class="eyebrow">For Non-Technical Users</p>
+            <h2>Use Codex by asking for outcomes, not by memorising skills</h2>
+            <p>
+              A non-technical teammate should not need to think about scripts, folders,
+              or automation config. The easiest model is: tell Codex what you want done,
+              give it the source material, and decide whether it should happen once or
+              keep happening automatically.
+            </p>
+          </div>
+
+          <div class="setup-grid">
+            <article class="setup-card">
+              <span class="setup-step">Ask</span>
+              <h3>Describe the outcome in plain English</h3>
+              <ul class="compact-list">
+                <li>“Set up a new client workspace for Mastercard.”</li>
+                <li>“Turn this transcript into proper meeting notes.”</li>
+                <li>“Process the latest Slack export for this client.”</li>
+                <li>“Refresh the working memory for this project.”</li>
+                <li>“Draft the follow-up message from this meeting.”</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Provide</span>
+              <h3>Give Codex the minimum source material it needs</h3>
+              <ul class="compact-list">
+                <li>A client name or project name</li>
+                <li>A transcript, rough notes, or exported Slack / Teams file</li>
+                <li>The audience, if you want a follow-up message or email</li>
+                <li>The instruction “make this automatic” if it should run in the background</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Trust</span>
+              <h3>Codex picks the right underlying skill</h3>
+              <p>
+                The user-facing request stays simple. Behind the scenes, Codex decides
+                whether this is a workspace setup job, meeting-note job, comms-processing
+                job, memory-refresh job, or publishing job.
+              </p>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Automate</span>
+              <h3>Use automations for repeatable jobs</h3>
+              <p>
+                If the same task will happen again and again, ask Codex to keep doing it.
+                That is when the recurring automations become useful: checking drop zones,
+                normalising new exports, refreshing memory, or syncing outputs elsewhere.
+              </p>
+            </article>
+          </div>
+
+          <div class="code-band">
+            <pre><code>What do you want done?
+What source material do you have?
+Should this happen once, or automatically from now on?</code></pre>
+          </div>
+        </section>
+
+        <section class="section section-contrast" id="setup">
+          <div class="section-heading">
+            <p class="eyebrow">Setup</p>
+            <h2>Recommended rollout for a new team</h2>
+            <p>
+              Start small: install the structure, create one client and one project,
+              then wire the automations that feed the memory loop.
+            </p>
+          </div>
+
+          <div class="setup-grid">
+            <article class="setup-card">
+              <span class="setup-step">Step 1</span>
+              <h3>Create the workspace</h3>
+              <p>Use the foundation scaffold before any client-specific automation work. The workspace root is typically `~/Documents/elixirr` on macOS and `%USERPROFILE%\Documents\elixirr` on Windows.</p>
+              <pre><code>./scripts/init-elixirr.sh
+./scripts/new-client.sh mastercard
+./scripts/new-project.sh mastercard platform-refresh</code></pre>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Step 2</span>
+              <h3>Document the durable context</h3>
+              <p>
+                Fill the entrypoints first so downstream meeting notes and memory refreshes
+                inherit the right framing.
+              </p>
+              <ul class="compact-list">
+                <li>`clients/&lt;client&gt;/context/index.md`</li>
+                <li>`projects/&lt;project&gt;/context/index.md`</li>
+                <li>`people.md`, `preferences.md`, `sources.md`, `decisions.md`</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Step 3</span>
+              <h3>Wire the intake paths</h3>
+              <p>Give raw source material a predictable landing zone.</p>
+              <ul class="compact-list">
+                <li>`raw-meetings/` for unfiled transcripts</li>
+                <li>`manual-exports/slack/` and `manual-exports/teams/` for raw comms</li>
+                <li>`outputs/automations/` for processed external automation results</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Step 4</span>
+              <h3>Turn on the recurring jobs</h3>
+              <p>These two automations demonstrate the intended cadence once the team is ready for background workflows.</p>
+              <ul class="compact-list">
+                <li>`elixirr-raw-meeting-dropzone` every 15 minutes</li>
+                <li>`elixirr-output-sync` hourly with local automation-to-client mappings</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="installation">
+          <div class="section-heading">
+            <p class="eyebrow">Installation</p>
+            <h2>How the skills are installed in practice</h2>
+            <p>
+              Codex uses runtime-installed copies from the local `.codex` home, and the
+              live automations point at those installed paths when they run.
+            </p>
+          </div>
+
+          <div class="setup-grid">
+            <article class="setup-card">
+              <span class="setup-step">Package</span>
+              <h3>Local skill package</h3>
+              <p>This skills folder contains the skill definitions, docs, and installer scripts used to refresh a local Codex install.</p>
+              <ul class="compact-list">
+                <li>`skills/&lt;skill-name&gt;/` contains each skill definition</li>
+                <li>`skills/scripts/` contains the macOS/Linux and Windows installers</li>
+                <li>`automations/&lt;automation-name&gt;/automation.toml` contains local automation templates when present</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Runtime</span>
+              <h3>Installed Codex copies</h3>
+              <p>The live runtime copies sit under the local Codex home.</p>
+              <ul class="compact-list">
+                <li>macOS / Linux: `~/.codex/skills/&lt;skill-name&gt;/` and `~/.codex/automations/&lt;automation-name&gt;/automation.toml`</li>
+                <li>Windows: `%USERPROFILE%\.codex\skills\&lt;skill-name&gt;\` and `%USERPROFILE%\.codex\automations\&lt;automation-name&gt;\automation.toml`</li>
+                <li>Automation prompts reference installed scripts under the local Codex home `skills/.../scripts/` path</li>
+              </ul>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Refresh</span>
+              <h3>Installer scripts for each platform</h3>
+              <p>
+                The simplest team path is to use the local installer script for their platform.
+                Under the hood, both installers follow the same refresh model: copy updated
+                skill folders or files into the local Codex skills directory, then copy or
+                update the matching automation TOMLs in the local Codex automations directory.
+              </p>
+              <pre><code>cp -R skills/elixirr-workspace-manager ~/.codex/skills/
+cp -R skills/elixirr-raw-meeting-dropzone ~/.codex/skills/
+cp automations/elixirr-raw-meeting-dropzone/automation.toml \
+  ~/.codex/automations/elixirr-raw-meeting-dropzone/automation.toml</code></pre>
+              <pre><code>macOS / Linux
+bash ./skills/scripts/install.sh
+bash ./skills/scripts/install.sh --dry-run
+
+Windows PowerShell
+pwsh -File .\skills\scripts\install.ps1
+pwsh -File .\skills\scripts\install.ps1 -DryRun</code></pre>
+            </article>
+
+            <article class="setup-card">
+              <span class="setup-step">Dependencies</span>
+              <h3>What the local Codex install already has enabled</h3>
+              <p>The current `.codex/config.toml` suggests the broader stack these workflows can lean on.</p>
+              <ul class="compact-list">
+                <li>Plugins enabled: Slack, Atlassian Rovo, Documents, Spreadsheets, Presentations, Browser Use</li>
+                <li>Typical trusted workspace root: `~/Documents/elixirr` on macOS or `%USERPROFILE%\Documents\elixirr` on Windows</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="flow">
+          <div class="section-heading">
+            <p class="eyebrow">Signal Flow</p>
+            <h2>The automation loop in plain English</h2>
+            <p>
+              The team does not need to memorize every script. They need to understand
+              the handoff points and which skill owns each transition.
+            </p>
+          </div>
+
+          <div class="flow-diagram">
+            <article class="flow-card">
+              <p class="flow-kicker">Capture</p>
+              <h3>Raw inputs arrive</h3>
+              <p>
+                Meeting transcripts land in `raw-meetings/`. Slack and Teams exports
+                land in `manual-exports/`. External automations write processed
+                markdown into a staging directory.
+              </p>
+            </article>
+            <article class="flow-card">
+              <p class="flow-kicker">Structure</p>
+              <h3>Skills turn inputs into durable records</h3>
+              <p>
+                `elixirr-raw-meeting-dropzone`, `elixirr-meeting-writer`, and
+                `elixirr-comms-normalizer` create clean meeting notes and output
+                summaries in the expected folders.
+              </p>
+            </article>
+            <article class="flow-card">
+              <p class="flow-kicker">Promote</p>
+              <h3>Working memory gets refreshed</h3>
+              <p>
+                `elixirr-memory-refresh` promotes only live signals into
+                `working-memory/current.md`, keeping the file concise and current.
+              </p>
+            </article>
+            <article class="flow-card">
+              <p class="flow-kicker">Act</p>
+              <h3>Humans and agents work from the same state</h3>
+              <p>
+                Follow-up comms, decisions, priorities, and next actions can now be
+                generated from a shared, trustworthy baseline.
+              </p>
+            </article>
+          </div>
+
+          <div class="code-band">
+            <pre><code>raw transcript -> elixirr-raw-meeting-dropzone -> meetings/
+raw Slack export -> elixirr-comms-normalizer -> outputs/slack/
+automation markdown -> elixirr-automation-output-publisher -> outputs/automations/
+meetings/ + outputs/ -> elixirr-memory-refresh -> working-memory/current.md</code></pre>
+          </div>
+        </section>
+
+        <section class="section section-contrast" id="skills">
+          <div class="section-heading">
+            <p class="eyebrow">Skill Catalogue</p>
+            <h2>What each skill does</h2>
+            <p>
+              Filter by job to explain the system to new teammates without throwing the
+              whole operating model at them at once. In practice, most users ask for outcomes and
+              let Codex choose the right skill.
+            </p>
+          </div>
+
+          <div class="filters" role="tablist" aria-label="Skill categories">
+            <button class="filter is-active" data-filter="all" type="button">All</button>
+            <button class="filter" data-filter="foundation" type="button">Foundation</button>
+            <button class="filter" data-filter="capture" type="button">Capture</button>
+            <button class="filter" data-filter="memory" type="button">Memory</button>
+            <button class="filter" data-filter="delivery" type="button">Delivery</button>
+          </div>
+
+          <div class="skills-grid">
+            <article class="skill-card" data-group="foundation">
+              <p class="skill-tag">Foundation</p>
+              <h3>elixirr-workspace-init</h3>
+              <p>Creates the top-level `shared/`, `clients/`, and `internal/` structure.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>You are starting a fresh Elixirr workspace.</dd>
+                <dt>Owns</dt>
+                <dd>`scripts/init-elixirr.sh`</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="foundation">
+              <p class="skill-tag">Foundation</p>
+              <h3>elixirr-client-workspace</h3>
+              <p>Scaffolds a client with context, working memory, meetings, Slack, Teams, and outputs.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>A new client needs a durable home and entrypoint docs.</dd>
+                <dt>Creates</dt>
+                <dd>`context/`, `working-memory/`, `meetings/`, `outputs/`, `slack/`, `teams/`</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="foundation">
+              <p class="skill-tag">Foundation</p>
+              <h3>elixirr-project-workspace</h3>
+              <p>Creates a project workspace inside a client with project-specific context and output paths.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>A client project needs its own context, meetings, outputs, and live memory.</dd>
+                <dt>Creates</dt>
+                <dd>`context/`, `meetings/`, `outputs/`, `manual-exports/`, `working-memory/`</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="foundation">
+              <p class="skill-tag">Foundation</p>
+              <h3>elixirr-workspace-manager</h3>
+              <p>The umbrella operational skill for scaffolding, meeting shells, channel workspaces, and automation templates.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>You need the multi-tool router for setup, helper scripts, and file placement.</dd>
+                <dt>Owns</dt>
+                <dd>Client/project creation, transcript capture, channel setup, automation output shells</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="capture">
+              <p class="skill-tag">Capture</p>
+              <h3>elixirr-meeting-notes</h3>
+              <p>Turns a transcript or rough notes into the standard Elixirr meeting note structure.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>The destination file exists or the filing path is already understood.</dd>
+                <dt>Produces</dt>
+                <dd>Summary, Decisions, Action Items, Risks / Blockers, References, Transcript</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="capture">
+              <p class="skill-tag">Capture</p>
+              <h3>elixirr-meeting-writer</h3>
+              <p>The paste-driven end-to-end workflow from transcript to saved finished note.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>A human pastes a transcript and wants the filing plus drafting handled in one pass.</dd>
+                <dt>Special behavior</dt>
+                <dd>Asks only short follow-up questions when filing risk is real.</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="capture">
+              <p class="skill-tag">Capture</p>
+              <h3>elixirr-raw-meeting-dropzone</h3>
+              <p>Batch-processes markdown transcripts from `raw-meetings/`, files them, and archives the originals.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>You want folder-driven transcript ingestion instead of pasting content into chat.</dd>
+                <dt>Automation fit</dt>
+                <dd>Best for recurring cron runs over the drop zone.</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="capture">
+              <p class="skill-tag">Capture</p>
+              <h3>elixirr-comms-normalizer</h3>
+              <p>Converts raw Slack and Teams exports into concise processed summaries under `outputs/`.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>Raw communication files are sitting in `manual-exports/` and should become reusable signals.</dd>
+                <dt>Protects against</dt>
+                <dd>Refreshing memory from noisy, unstructured raw source material.</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="memory">
+              <p class="skill-tag">Memory</p>
+              <h3>elixirr-memory-refresh</h3>
+              <p>Updates `working-memory/current.md` from the latest meetings, automation outputs, and communication summaries.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>The workspace already has processed inputs and needs the live state refreshed.</dd>
+                <dt>Promotes</dt>
+                <dd>Current Focus, Active Priorities, Risks / Blockers, Next Actions, Latest Signals</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="memory">
+              <p class="skill-tag">Memory</p>
+              <h3>elixirr-memory-bootstrap</h3>
+              <p>Builds the first useful baseline for a legacy client or project with lots of existing history.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>You are migrating into the v2 model and need a current-state summary without replaying everything forever.</dd>
+                <dt>Differs from refresh</dt>
+                <dd>Chunked historical summarization first, then a clean `working-memory/current.md` baseline.</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="delivery">
+              <p class="skill-tag">Delivery</p>
+              <h3>elixirr-follow-up-comms</h3>
+              <p>Turns saved meeting notes into outbound Slack, Teams, email, or task-list artifacts.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>The team needs a post-meeting message or action list grounded in the note.</dd>
+                <dt>Can save to</dt>
+                <dd>`outputs/communications/` when the user wants durable drafts.</dd>
+              </dl>
+            </article>
+
+            <article class="skill-card" data-group="delivery">
+              <p class="skill-tag">Delivery</p>
+              <h3>elixirr-automation-output-publisher</h3>
+              <p>Copies processed automation markdown from local staging areas into Elixirr `outputs/automations/` folders.</p>
+              <dl>
+                <dt>Use it when</dt>
+                <dd>An external automation can only write inside its own local workspace or staging area.</dd>
+                <dt>Enables</dt>
+                <dd>Multiple automation feeds to participate in the same memory refresh pipeline.</dd>
+              </dl>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="automations">
+          <div class="section-heading">
+            <p class="eyebrow">Automation Examples</p>
+            <h2>Demo automations plus the wider live chain</h2>
+            <p>
+              The two highlighted examples are still the best show-and-tell anchors, but the
+              live `.codex` install also reveals the broader production pattern around them.
+            </p>
+          </div>
+
+          <div class="automation-grid">
+            <article class="automation-card">
+              <p class="automation-type">Cron every 15 minutes</p>
+              <h3>Elixirr Raw Meeting Dropzone</h3>
+              <p>
+                Watches the `raw-meetings` folder inside the Elixirr workspace root, infers
+                client and meeting metadata, saves a structured meeting note, and archives the
+                raw transcript only after success.
+              </p>
+              <ul class="compact-list">
+                <li>Best for recurring transcript intake</li>
+                <li>Typical roots: `~/Documents/elixirr/raw-meetings` on macOS or `%USERPROFILE%\Documents\elixirr\raw-meetings` on Windows</li>
+                <li>Routes unmatched files to `internal/meetings/`</li>
+                <li>Pairs `workspace-manager` helpers with `meeting-notes` formatting</li>
+              </ul>
+            </article>
+
+            <article class="automation-card">
+              <p class="automation-type">Cron every hour</p>
+              <h3>Elixirr Output Sync</h3>
+              <p>
+                Pulls processed markdown from local automation output folders into the right
+                client `outputs/automations/` destination without overwriting same-name files.
+              </p>
+              <ul class="compact-list">
+                <li>Best for external local automations</li>
+                <li>Uses local `--mapping NAME SOURCE DESTINATION` definitions</li>
+                <li>Keeps the shared automation template generic and reusable</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="automation-strip">
+            <article class="mini-automation">
+              <h3>Client Comms Normalize</h3>
+              <p>Hourly client-specific jobs run `elixirr-comms-normalizer` over unarchived Slack and Teams exports.</p>
+            </article>
+            <article class="mini-automation">
+              <h3>Client Memory Refresh</h3>
+              <p>Hourly refresh jobs promote processed comms, meetings, and automation outputs into current working memory.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section section-contrast" id="principles">
+          <div class="section-heading">
+            <p class="eyebrow">Team Guidance</p>
+            <h2>What good usage looks like</h2>
+          </div>
+
+          <div class="principles-grid">
+            <article class="principle">
+              <h3>Use setup skills first</h3>
+              <p>Get the folders and context files right before adding automations or memory refresh logic.</p>
+            </article>
+            <article class="principle">
+              <h3>Ask for the job, not the implementation</h3>
+              <p>Most teammates should describe the outcome they want and let Codex choose the skill or automation path.</p>
+            </article>
+            <article class="principle">
+              <h3>Normalize before promoting</h3>
+              <p>Raw Slack or Teams material should become processed summaries before it influences working memory.</p>
+            </article>
+            <article class="principle">
+              <h3>Keep working memory current, not exhaustive</h3>
+              <p>`working-memory/current.md` should read like the latest operating picture, not an archive dump.</p>
+            </article>
+            <article class="principle">
+              <h3>Archive only after success</h3>
+              <p>Whether it is a transcript or a communication export, the raw source should remain in place until the durable output exists.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
