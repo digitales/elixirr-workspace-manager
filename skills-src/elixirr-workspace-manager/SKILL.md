@@ -17,6 +17,8 @@ Use this skill when the user wants to create or extend the Elixirr directory str
 - For a new meeting note shell, use `scripts/create-meeting-note.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>]`
 - For a note plus transcript capture in one step, use `scripts/capture-meeting-transcript.sh --client <client-slug> --meeting <meeting-name> --date YYYY-MM-DD [--project <project-slug>] [--scope recurring|adhoc|project] [--root <root-dir>] [--transcript-file <path>]`
 - For archiving a processed raw communication export, use `scripts/archive-manual-export.sh <manual-export-file>`
+- For raw meeting drop-zone discovery, use `scripts/scan-raw-meetings-dropzone.sh [--root <root-dir>] [--dropzone <raw-meetings-dir>]`
+- For archiving a processed raw meeting transcript, use `scripts/archive-raw-meeting-transcript.sh <source-file> [--root <root-dir>] [--dropzone <raw-meetings-dir>]`
 
 Default the root directory to `~/Documents/elixirr` unless the user specifies another location.
 
@@ -40,6 +42,14 @@ For combined transcript capture:
 2. The helper creates the note if needed and writes the transcript into the `## Transcript` section.
 3. Then use `elixirr-meeting-notes` to summarize and complete the structured sections if requested.
 
+For raw meeting drop-zone support:
+
+1. Use `scan-raw-meetings-dropzone.sh` to ensure `~/Documents/elixirr/raw-meetings` exists and to list unarchived markdown transcripts.
+2. Treat files in `raw-meetings/<client>/` as client-wide meeting sources.
+3. For root-level files, infer the client from the longest matching client slug in `clients/`.
+4. Route unmatched files to `internal/meetings/`.
+5. After successful note creation and summarization, archive the raw file with `archive-raw-meeting-transcript.sh`.
+
 For channel setup:
 
 1. Use `create-channel-workspace.sh` when a client Slack or Teams channel needs a durable home.
@@ -59,6 +69,7 @@ For recurring automation outputs:
 - Client-wide Teams mappings and channel outputs live under `clients/<client>/teams/`
 - Client channel raw exports should usually live under `clients/<client>/slack/channels/<channel>/manual-exports/` or `clients/<client>/teams/channels/<channel>/manual-exports/`
 - Processed raw communication exports should be moved into the sibling `archive/` folder so they are not reprocessed
+- Raw meeting transcripts should arrive in `raw-meetings/` and move into `raw-meetings/archive/` only after successful note creation
 - Client-wide meetings live under `clients/<client>/meetings/`
 - Project-specific context lives under `clients/<client>/projects/<project>/context/`
 - Project working memory lives under `clients/<client>/projects/<project>/working-memory/`

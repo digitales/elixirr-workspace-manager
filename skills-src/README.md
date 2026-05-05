@@ -8,6 +8,10 @@ The recommended automation trigger model is documented in:
 
 - `skills-src/AUTOMATION-SPEC.md`
 
+The demo-friendly guide for the wider team now lives in:
+
+- `skills-src/docs/index.html`
+
 ## Changes So Far
 
 The Elixirr skill set has been extended from a basic client/project scaffold into a broader operational workspace model.
@@ -32,6 +36,7 @@ Current capabilities added so far:
 - working-memory refresh skill for promoting important signals into live project memory
 - working-memory bootstrap skill for bringing legacy project history into the v2 model
 - follow-up communication skill for Slack, Teams, email, and task-list outputs
+- raw meeting drop-zone skill for routing transcripts from `raw-meetings/` into structured meeting notes
 
 The current operating model is:
 
@@ -182,6 +187,18 @@ Follow-up question behavior:
 - yes, this skill should ask short follow-up questions when filing details are missing
 - typical examples are client, whether the meeting is client-wide or project-specific, project name, or meeting date
 - it should avoid long questionnaires and only ask what is needed to save the note correctly
+
+### `elixirr-raw-meeting-dropzone`
+
+Use this for folder-driven transcript ingestion from `~/Documents/elixirr/raw-meetings`.
+
+Primary use cases:
+
+- treating `raw-meetings/` as a drop zone for unfiled markdown transcripts
+- inferring the client from either a client subfolder or a root-level filename prefix
+- creating client-wide recurring meeting notes from queued transcripts
+- routing unmatched transcripts to `internal/meetings/`
+- archiving raw transcripts only after the saved note has been created successfully
 
 ### `elixirr-memory-refresh`
 
@@ -472,6 +489,13 @@ For meeting capture:
 1. Create the meeting note shell with `create-meeting-note.sh`, or use `capture-meeting-transcript.sh` if you already have a transcript.
 2. Use `elixirr-meeting-writer` when you want a finished note drafted from the transcript.
 3. Use `elixirr-meeting-notes` for lighter formatting or updates to an existing note.
+
+For raw meeting drop-zone automation:
+
+1. Use `elixirr-raw-meeting-dropzone` when transcripts land in `~/Documents/elixirr/raw-meetings`.
+2. Start with `scan-raw-meetings-dropzone.sh` to create the drop zone if needed and list queued transcripts.
+3. Use `capture-meeting-transcript.sh` plus `elixirr-meeting-notes` for each queued file.
+4. Archive the raw transcript only after the structured note is saved successfully.
 
 For memory refresh:
 

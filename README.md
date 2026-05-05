@@ -2,6 +2,14 @@
 
 This folder contains small scripts and templates for creating an `elixirr` workspace that is organized by client and project.
 
+## Team Guide
+
+A demo-friendly site that explains the automation operating model, setup flow, and skill catalogue now lives in:
+
+- `skills-src/docs/index.html`
+
+Open that file in a browser to walk the wider team through how the skills fit together.
+
 ## Scripts
 
 - `scripts/init-elixirr.sh`: create the top-level workspace structure
